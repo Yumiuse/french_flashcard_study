@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/  # あなたの仮想環境フォルダ名
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment variables file (念のため記述)
+.env
+
+# IPython Notebook (もし使うなら)
+.ipynb_checkpoints
+# 学習済みモデルファイルは除外（CSVの level 列で十分なため、*.pkl はリポジトリに含めません）
+*.pkl
+
