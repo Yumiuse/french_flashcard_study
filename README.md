@@ -13,27 +13,31 @@
 - Data: Pandas + CSV
 - Translation: OpenAI GPT-4
 
-## セットアップ
+
+## セットアップ方法
 
 ```bash
-# 1. クローン・環境構築
+# リポジトリをクローン・仮想環境作成
 git clone https://github.com/Yumiuse/french_flashcard_study.git
 cd french_flashcard_study
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 
-# 2. 環境変数設定（.envファイル作成）
+# 環境変数（OpenAI APIキー設定）
 echo "OPENAI_API_KEY=your_api_key_here" > .env
 
-# 3. API起動（別ターミナルで実行）
-uvicorn backend_level_FastAPI:app --port 8014 &
-uvicorn chatGPTAPI:app --port 8000 &
+# 以下の順番で起動してください
 
-# 4. アプリ起動
+# 1) レベル判定 & フィードバック用 FastAPI (ポート8014)
+uvicorn backend_level_FastAPI:app --port 8014
+
+# 2) 翻訳用 FastAPI (ポート8000)
+uvicorn chatGPTAPI:app --port 8000
+
+# 3) Streamlit アプリ (ポート8501)
 streamlit run frontend_streamlit.py
-```
 
-ブラウザで `http://localhost:8501` を開く
+ブラウザで `http://localhost:8501` にアクセス
 
 ## ファイル構成
 - `frontend_streamlit.py` - メインアプリ

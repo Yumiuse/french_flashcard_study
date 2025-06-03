@@ -6,27 +6,17 @@ import re
 import math
 from datetime import datetime, timedelta 
 from zoneinfo import ZoneInfo
-import os
+
 # --- セッション状態の初期化 ---
 if 'index' not in st.session_state:
     st.session_state.index = 0
-if 'flip' not in st.session_state:
     st.session_state.flip = True
-if 'active_feedback' not in st.session_state:
     st.session_state.active_feedback = None
-if 'feedback_message' not in st.session_state:
     st.session_state.feedback_message = ""
-if 'review_count' not in st.session_state:
     st.session_state.review_count = 0
-
-
-if 'next_review_time_1' not in st.session_state:
     st.session_state.next_review_time_1 = None
-if 'next_review_time_2' not in st.session_state:
     st.session_state.next_review_time_2 = None
-if 'next_review_time_3' not in st.session_state:
     st.session_state.next_review_time_3 = None
-
 
 
 
@@ -148,7 +138,7 @@ st.markdown("""
 @st.cache_data
 def load_data():
     # CSVファイル名が "_修正済み.csv" になっていますが、これが正しいか確認してください
-    return pd.read_csv('/Volumes/SP PC60/ChatGPT_API/input/mettre_fin_Lexique_translated_v6w_修正済み.csv').sample(frac=1).reset_index(drop=True)
+    return pd.read_csv('data/mettre_fin_Lexique_translated_v6w_修正済み.csv').sample(frac=1).reset_index(drop=True)
 
 df = load_data()
 
@@ -383,7 +373,7 @@ for _ in range(2):
     st.write("")
 
 BASE_DIR = os.path.dirname(__file__)
-csv_path_lexique = '/Volumes/SP PC60/ChatGPT_API/input/mettre_fin_Lexique_translated_v6w_修正済み.csv'
+csv_path_lexique = 'data/mettre_fin_Lexique_translated_v6w_修正済み.csv'
 try:
     df_lexique = pd.read_csv(csv_path_lexique, dtype={"level": int})
 except Exception as e:
@@ -392,7 +382,7 @@ except Exception as e:
 
 with st.expander("▶️ 最新フィードバック履歴を表示"):
     try:
-        df_fb = pd.read_csv("/Volumes/SP PC60/ChatGPT_API/feedback.csv")
+        df_fb = pd.read_csv("data/feedback.csv")
         if (
             not df_lexique.empty
             and "card_id" in df_fb.columns
