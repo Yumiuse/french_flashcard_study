@@ -1,6 +1,21 @@
 streamlit==1.10.0
 
 
+# FastAPI 用
+fastapi
+uvicorn
+
+# HTTP クライアント（翻訳API呼び出し用など）
+httpx
+requests
+
+# データ操作用
+pandas
+
+# .env ファイル読み込み用
+python-dotenv
+
+
 
 # git add requirements.txt
 # git commit -m "Add requirements file"
