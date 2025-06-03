@@ -6,7 +6,7 @@ import re
 import math
 from datetime import datetime, timedelta 
 from zoneinfo import ZoneInfo
-
+import os
 # --- セッション状態の初期化 ---
 if 'index' not in st.session_state:
     st.session_state.index = 0
