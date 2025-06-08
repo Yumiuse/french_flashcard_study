@@ -170,30 +170,47 @@ class FeedbackRequest(BaseModel):
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 FEEDBACK_CSV = os.path.join(DATA_DIR, "feedback.csv")
 
+
+def adjust_to_study_hours(dt, earliest=7, latest=22):
+    """深夜の復習予定は翌朝に自動補正する（dt: datetime型）"""
+    if dt.hour < earliest:
+        return dt.replace(hour=earliest, minute=0, second=0, microsecond=0)
+    elif dt.hour >= latest:
+        # 翌朝 earliest にセット
+        next_day = dt + timedelta(days=1)
+        return next_day.replace(hour=earliest, minute=0, second=0, microsecond=0)
+    return dt
+
+
+
+
 @app.post("/feedback/")
 async def record_feedback(req: FeedbackRequest):
-    # ログ出力（そのまま）
     print("DEBUG /feedback/ called with:", req.dict())
-
-    # フィードバック時刻はクライアントから来るのでそのまま ISO 文字列化
-    # CSV 最終列の「recorded_at」はサーバー側のローカル時間に
     recorded_at = datetime.now(ZoneInfo("Asia/Tokyo")).isoformat()
+
+    # ★ ここで「夜中→朝7時」自動補正！
+    nrt1 = adjust_to_study_hours(req.next_review_time_1)
+    nrt2 = adjust_to_study_hours(req.next_review_time_2)
+    nrt3 = adjust_to_study_hours(req.next_review_time_3)
 
     row = [
         req.user_id,
         req.card_id,
         req.feedback,
-        req.feedback_time.isoformat(),         # 送られてきた feedback_time
+        req.feedback_time.isoformat(),
         req.review_count,
-        req.next_review_time_1.isoformat(),
-        req.next_review_time_2.isoformat(),
-        req.next_review_time_3.isoformat(),
+        nrt1.isoformat(),
+        nrt2.isoformat(),
+        nrt3.isoformat(),
         int(req.next_review1),
         int(req.next_review2),
         int(req.next_review3),
         recorded_at,
     ]
     print("DEBUG writing row:", row)
+
+
 
     try:
         with open(FEEDBACK_CSV, mode="a", newline="", encoding="utf-8") as f:
