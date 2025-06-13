@@ -1,4 +1,4 @@
-# French Flashcard Study
+# French Flashcard Study (url https://yumiuse.github.io/ )
 
 フラッシュカード式フランス語学習アプリ（Streamlit + FastAPI + ChatGPT API）
 
